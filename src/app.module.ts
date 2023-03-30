@@ -8,8 +8,10 @@ import { ComplaintsModule } from './complaints/complaints.module';
 import { ProhibitionsModule } from './prohibitions/prohibitions.module';
 import { GeolocationModule } from './geolocation/geolocation.module';
 import { SseModule } from './sse/sse.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EnvConfigValidationSchema } from './env-config.schema';
+import { TypeOrmModule } from '@nestjs/typeorm/dist';
+import { DSN } from './constants';
 
 @Module({
   imports: [
@@ -25,6 +27,11 @@ import { EnvConfigValidationSchema } from './env-config.schema';
     ConfigModule.forRoot({
       envFilePath: `.env.stage.${process.env.STAGE}`,
       validationSchema: EnvConfigValidationSchema,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: DSN.PGFactory,
     }),
   ],
 })
