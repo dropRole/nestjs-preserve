@@ -8,8 +8,24 @@ import { ComplaintsModule } from './complaints/complaints.module';
 import { ProhibitionsModule } from './prohibitions/prohibitions.module';
 import { GeolocationModule } from './geolocation/geolocation.module';
 import { SseModule } from './sse/sse.module';
+import { ConfigModule } from '@nestjs/config';
+import { EnvConfigValidationSchema } from './env-config.schema';
 
 @Module({
-  imports: [AuthModule, OffereesModule, OfferorsModule, RequestsModule, ReservationsModule, ComplaintsModule, ProhibitionsModule, GeolocationModule, SseModule]
+  imports: [
+    AuthModule,
+    OffereesModule,
+    OfferorsModule,
+    RequestsModule,
+    ReservationsModule,
+    ComplaintsModule,
+    ProhibitionsModule,
+    GeolocationModule,
+    SseModule,
+    ConfigModule.forRoot({
+      envFilePath: `.env.stage.${process.env.STAGE}`,
+      validationSchema: EnvConfigValidationSchema,
+    }),
+  ],
 })
 export class AppModule {}
