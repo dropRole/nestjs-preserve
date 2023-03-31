@@ -8,7 +8,9 @@ import {
   Delete,
 } from '@nestjs/common';
 import { Account } from 'src/auth/account.entity';
+import { Privilege } from 'src/auth/enum/privilege.enum';
 import { GetAccount } from 'src/auth/get-account.decorator';
+import { Privileges } from 'src/auth/privileges.decorator';
 import { Complaint } from './complaint.entity';
 import { ComplaintsService } from './complaints.service';
 import { ComplaintSubmitDTO } from './dto/complaint-submit.dto';
@@ -19,6 +21,7 @@ export class ComplaintsController {
   constructor(private complaintsService: ComplaintsService) {}
 
   @Post()
+  @Privileges(Privilege.OFFEREE, Privilege.OFFEROR)
   complain(
     @GetAccount() account: Account,
     @Body() complaintSubmitDTO: ComplaintSubmitDTO,
@@ -27,6 +30,7 @@ export class ComplaintsController {
   }
 
   @Get('/:idReservations')
+  @Privileges(Privilege.OFFEREE, Privilege.OFFEROR, Privilege.SUPERUSER)
   getComplaints(
     @GetAccount() account: Account,
     @Param('idReservations') idReservations: string,
@@ -35,6 +39,7 @@ export class ComplaintsController {
   }
 
   @Patch()
+  @Privileges(Privilege.OFFEREE, Privilege.OFFEROR)
   updateContent(
     @GetAccount() account: Account,
     @Body() contentUpdateDTO: ContentUpdateDTO,
@@ -43,6 +48,7 @@ export class ComplaintsController {
   }
 
   @Delete('/:id')
+  @Privileges(Privilege.OFFEREE, Privilege.OFFEROR)
   withdrawComplaint(
     @GetAccount() account: Account,
     @Param('id') id: string,

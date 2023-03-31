@@ -8,7 +8,9 @@ import {
   Delete,
 } from '@nestjs/common';
 import { Account } from 'src/auth/account.entity';
+import { Privilege } from 'src/auth/enum/privilege.enum';
 import { GetAccount } from 'src/auth/get-account.decorator';
+import { Privileges } from 'src/auth/privileges.decorator';
 import { OffereeProhibitDTO } from './dto/offeree-prohibit.dto';
 import { TimeframeUpdateDTO } from './dto/timeframe-update.dto';
 import { Prohibition } from './prohibition.entity';
@@ -19,6 +21,7 @@ export class ProhibitionsController {
   constructor(private prohibitionsService: ProhibitionsService) {}
 
   @Post()
+  @Privileges(Privilege.SUPERUSER)
   prohibitOfferee(
     @Body() offereeProhibitDTO: OffereeProhibitDTO,
   ): Promise<void> {
@@ -26,6 +29,7 @@ export class ProhibitionsController {
   }
 
   @Get('/offeree')
+  @Privileges(Privilege.OFFEREE, Privilege.SUPERUSER)
   getProhibitionsOfOfferee(
     @GetAccount() account: Account,
     @Body('username') username?: string,
@@ -34,6 +38,7 @@ export class ProhibitionsController {
   }
 
   @Get('/offeror')
+  @Privileges(Privilege.OFFEROR, Privilege.SUPERUSER)
   getProhibitionsForOfferor(
     @GetAccount() account: Account,
     @Body('name') name?: string,
@@ -42,6 +47,7 @@ export class ProhibitionsController {
   }
 
   @Patch('/:id/timeframe')
+  @Privileges(Privilege.SUPERUSER)
   updateTimeframe(
     @Param('id') id: string,
     @Body() timeframeUpdateDTO: TimeframeUpdateDTO,
@@ -50,6 +56,7 @@ export class ProhibitionsController {
   }
 
   @Delete('/:id')
+  @Privileges(Privilege.SUPERUSER)
   revokeProhibition(@Param('id') id: string): Promise<void> {
     return;
   }

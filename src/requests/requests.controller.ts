@@ -9,7 +9,9 @@ import {
   Param,
 } from '@nestjs/common';
 import { Account } from 'src/auth/account.entity';
+import { Privilege } from 'src/auth/enum/privilege.enum';
 import { GetAccount } from 'src/auth/get-account.decorator';
+import { Privileges } from 'src/auth/privileges.decorator';
 import { AssessmentMakeDTO } from './dto/assessment-make.dto';
 import { RequestFilterDTO } from './dto/request-filter.dto';
 import { RequestSubmitDTO } from './dto/request-submit.dto';
@@ -20,6 +22,7 @@ export class RequestsController {
   constructor(private requestsService: RequestsService) {}
 
   @Post()
+  @Privileges(Privilege.OFFEREE)
   requestForReservation(
     @GetAccount() account: Account,
     @Body() requestSubmitDTO: RequestSubmitDTO,
@@ -28,6 +31,7 @@ export class RequestsController {
   }
 
   @Get()
+  @Privileges(Privilege.OFFEREE, Privilege.OFFEROR)
   getRequests(
     @GetAccount() account: Account,
     @Query() requestFilterDTO: RequestFilterDTO,
@@ -36,6 +40,7 @@ export class RequestsController {
   }
 
   @Patch('/assessment')
+  @Privileges(Privilege.OFFEROR)
   assessReservationTime(
     @GetAccount() account: Account,
     @Body() assessmentMakeDTO: AssessmentMakeDTO,
@@ -44,6 +49,7 @@ export class RequestsController {
   }
 
   @Delete('/:id')
+  @Privileges(Privilege.OFFEREE)
   withdrawRequest(
     @GetAccount() account: Account,
     @Param('id') id: string,
