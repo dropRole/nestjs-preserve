@@ -12,7 +12,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EnvConfigValidationSchema } from './env-config.schema';
 import { TypeOrmModule } from '@nestjs/typeorm/dist';
 import { DSN } from './constants';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
+import { JWTGuard } from './auth/jwt.guard';
+import { PrivilegesGuard } from './auth/privileges.guard';
 
 @Module({
   imports: [
@@ -39,6 +41,14 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     {
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: JWTGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PrivilegesGuard,
     },
   ],
 })

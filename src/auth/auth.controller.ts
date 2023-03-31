@@ -8,22 +8,27 @@ import { PassUpdateDTO } from './dto/pass-update.dto';
 import { UsernameUpdateDTO } from './dto/username-update.dto';
 import { Privilege } from './enum/privilege.enum';
 import { GetAccount } from './get-account.decorator';
+import { Privileges } from './privileges.decorator';
+import { Public } from './public.decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('/offeree/signup')
+  @Public()
   signupOfferee(@Body() offereeSignupDTO: OffereeSignupDTO): Promise<void> {
     return;
   }
 
   @Post('/offeror/signup')
+  @Privileges(Privilege.SUPERUSER)
   signupOfferor(@Body() offerorSignupDTO: OfferorSignupDTO): Promise<void> {
     return;
   }
 
   @Post('/login')
+  @Public()
   login(
     @Body() loginDTO: LoginDTO,
   ): Promise<{ accessToken: string; privilege: Privilege }> {
@@ -31,6 +36,7 @@ export class AuthController {
   }
 
   @Patch('/username')
+  @Privileges(Privilege.OFFEREE, Privilege.OFFEROR)
   updateUsername(
     @GetAccount() account: Account,
     @Body() usernameUpdateDTO: UsernameUpdateDTO,
@@ -39,6 +45,7 @@ export class AuthController {
   }
 
   @Patch('/pass')
+  @Privileges(Privilege.OFFEREE, Privilege.OFFEROR)
   updatePass(
     @GetAccount() account: Account,
     @Body() passUpdateDTO: PassUpdateDTO,

@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { JwtModuleOptions } from '@nestjs/jwt';
 
 export const DSN: {
   PGFactory: (configService: ConfigService) => Promise<TypeOrmModuleOptions>;
@@ -17,3 +18,14 @@ export const DSN: {
     synchronize: process.env.STAGE === 'dev' ? true : false,
   }),
 };
+
+export const JWTFactory: (
+  configService: ConfigService,
+) => Promise<JwtModuleOptions> = async (
+  configService: ConfigService,
+): Promise<JwtModuleOptions> => ({
+  secret: configService.get('JWT_SECRET'),
+  signOptions: {
+    expiresIn: configService.get('JWT_EXPIRATION'),
+  },
+});

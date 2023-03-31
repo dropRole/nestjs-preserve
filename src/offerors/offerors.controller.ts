@@ -1,6 +1,8 @@
 import { Controller, Get, Query, Param, Patch, Body } from '@nestjs/common';
 import { Account } from 'src/auth/account.entity';
+import { Privilege } from 'src/auth/enum/privilege.enum';
 import { GetAccount } from 'src/auth/get-account.decorator';
+import { Privileges } from 'src/auth/privileges.decorator';
 import { BusinessInfoUpdateDTO } from './dto/business-info-update.dto';
 import { OfferorFilterDTO } from './dto/offeror-filter.dto';
 import { ReputationUpdateDTO } from './dto/reputation-update.dto';
@@ -12,11 +14,13 @@ export class OfferorsController {
   constructor(private offerorsService: OfferorsService) {}
 
   @Get()
+  @Privileges(Privilege.OFFEREE, Privilege.SUPERUSER)
   getOfferors(@Query() offerorFilterDTO: OfferorFilterDTO): Promise<Offeror[]> {
     return;
   }
 
   @Get('/reputation/:username')
+  @Privileges(Privilege.OFFEROR, Privilege.SUPERUSER)
   getReputation(@Param('username') username: string): Promise<{
     responsiveness: number;
     compliance: number;
@@ -26,6 +30,7 @@ export class OfferorsController {
   }
 
   @Get('/businessInfo')
+  @Privileges(Privilege.OFFEROR)
   getBusinessInfo(@GetAccount() account: Account): Promise<{
     name: string;
     address: string;
@@ -37,6 +42,7 @@ export class OfferorsController {
   }
 
   @Patch('/businessInfo')
+  @Privileges(Privilege.OFFEROR)
   updateBusinessInfo(
     @GetAccount() account: Account,
     @Body()
@@ -46,6 +52,7 @@ export class OfferorsController {
   }
 
   @Patch('/reputation')
+  @Privileges(Privilege.SUPERUSER)
   updateReputation(
     @Body() reputationUpdateDTO: ReputationUpdateDTO,
   ): Promise<void> {
