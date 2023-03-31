@@ -16,7 +16,7 @@ export class OfferorsController {
   @Get()
   @Privileges(Privilege.OFFEREE, Privilege.SUPERUSER)
   getOfferors(@Query() offerorFilterDTO: OfferorFilterDTO): Promise<Offeror[]> {
-    return;
+    return this.offerorsService.getOfferors(offerorFilterDTO);
   }
 
   @Get('/reputation/:username')
@@ -26,7 +26,7 @@ export class OfferorsController {
     compliance: number;
     timeliness: number;
   }> {
-    return;
+    return this.offerorsService.getReputation(username);
   }
 
   @Get('/businessInfo')
@@ -38,7 +38,7 @@ export class OfferorsController {
     telephone: string;
     businessHours: string;
   }> {
-    return;
+    return this.offerorsService.getBusinessInfo(account);
   }
 
   @Patch('/businessInfo')
@@ -48,7 +48,10 @@ export class OfferorsController {
     @Body()
     businessInfoUpdateDTO: BusinessInfoUpdateDTO,
   ): Promise<void> {
-    return;
+    return this.offerorsService.updateBusinessInfo(
+      account,
+      businessInfoUpdateDTO,
+    );
   }
 
   @Patch('/reputation')
@@ -56,6 +59,6 @@ export class OfferorsController {
   updateReputation(
     @Body() reputationUpdateDTO: ReputationUpdateDTO,
   ): Promise<void> {
-    return;
+    return this.offerorsService.updateReputation(reputationUpdateDTO);
   }
 }

@@ -14,7 +14,7 @@ export class OffereesController {
   @Get()
   @Privileges(Privilege.SUPERUSER)
   getOfferees(@Query('search') search: string): Promise<Offeree[]> {
-    return;
+    return this.offereesService.getOfferees(search);
   }
 
   @Get('/basics')
@@ -25,7 +25,7 @@ export class OffereesController {
     email: string;
     username: string;
   }> {
-    return;
+    return this.offereesService.getBasics(account);
   }
 
   @Patch('/basics')
@@ -34,6 +34,6 @@ export class OffereesController {
     @GetAccount() account: Account,
     @Body() basicsUpdateDTO: BasicsUpdateDTO,
   ): Promise<void> {
-    return;
+    return this.offereesService.updateBasics(account, basicsUpdateDTO);
   }
 }

@@ -18,13 +18,13 @@ export class AuthController {
   @Post('/offeree/signup')
   @Public()
   signupOfferee(@Body() offereeSignupDTO: OffereeSignupDTO): Promise<void> {
-    return;
+    return this.authService.signupOfferee(offereeSignupDTO);
   }
 
   @Post('/offeror/signup')
   @Privileges(Privilege.SUPERUSER)
   signupOfferor(@Body() offerorSignupDTO: OfferorSignupDTO): Promise<void> {
-    return;
+    return this.authService.signupOfferor(offerorSignupDTO);
   }
 
   @Post('/login')
@@ -32,7 +32,7 @@ export class AuthController {
   login(
     @Body() loginDTO: LoginDTO,
   ): Promise<{ accessToken: string; privilege: Privilege }> {
-    return;
+    return this.authService.login(loginDTO);
   }
 
   @Patch('/username')
@@ -41,7 +41,7 @@ export class AuthController {
     @GetAccount() account: Account,
     @Body() usernameUpdateDTO: UsernameUpdateDTO,
   ): Promise<{ accessToken: string }> {
-    return;
+    return this.authService.updateUsername(account, usernameUpdateDTO);
   }
 
   @Patch('/pass')
@@ -50,6 +50,6 @@ export class AuthController {
     @GetAccount() account: Account,
     @Body() passUpdateDTO: PassUpdateDTO,
   ): Promise<void> {
-    return;
+    return this.authService.updatePass(account, passUpdateDTO);
   }
 }

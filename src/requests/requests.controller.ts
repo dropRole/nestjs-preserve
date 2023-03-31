@@ -15,6 +15,7 @@ import { Privileges } from 'src/auth/privileges.decorator';
 import { AssessmentMakeDTO } from './dto/assessment-make.dto';
 import { RequestFilterDTO } from './dto/request-filter.dto';
 import { RequestSubmitDTO } from './dto/request-submit.dto';
+import { Request } from './request.entity';
 import { RequestsService } from './requests.service';
 
 @Controller('requests')
@@ -27,7 +28,10 @@ export class RequestsController {
     @GetAccount() account: Account,
     @Body() requestSubmitDTO: RequestSubmitDTO,
   ): Promise<Request> {
-    return;
+    return this.requestsService.requestForReservation(
+      account,
+      requestSubmitDTO,
+    );
   }
 
   @Get()
@@ -36,7 +40,7 @@ export class RequestsController {
     @GetAccount() account: Account,
     @Query() requestFilterDTO: RequestFilterDTO,
   ): Promise<Request[]> {
-    return;
+    return this.requestsService.getRequests(account, requestFilterDTO);
   }
 
   @Patch('/assessment')
@@ -45,7 +49,10 @@ export class RequestsController {
     @GetAccount() account: Account,
     @Body() assessmentMakeDTO: AssessmentMakeDTO,
   ): Promise<void> {
-    return;
+    return this.requestsService.assessReservationTime(
+      account,
+      assessmentMakeDTO,
+    );
   }
 
   @Delete('/:id')
@@ -54,6 +61,6 @@ export class RequestsController {
     @GetAccount() account: Account,
     @Param('id') id: string,
   ): Promise<void> {
-    return;
+    return this.requestsService.withdrawalRequest(account, id);
   }
 }

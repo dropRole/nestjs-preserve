@@ -26,7 +26,7 @@ export class ComplaintsController {
     @GetAccount() account: Account,
     @Body() complaintSubmitDTO: ComplaintSubmitDTO,
   ): Promise<void> {
-    return;
+    return this.complaintsService.complain(account, complaintSubmitDTO);
   }
 
   @Get('/:idReservations')
@@ -35,7 +35,7 @@ export class ComplaintsController {
     @GetAccount() account: Account,
     @Param('idReservations') idReservations: string,
   ): Promise<Complaint[]> {
-    return;
+    return this.complaintsService.getComplaints(account, idReservations);
   }
 
   @Patch()
@@ -44,7 +44,7 @@ export class ComplaintsController {
     @GetAccount() account: Account,
     @Body() contentUpdateDTO: ContentUpdateDTO,
   ): Promise<void> {
-    return;
+    return this.complaintsService.updateContent(account, contentUpdateDTO);
   }
 
   @Delete('/:id')
@@ -53,6 +53,6 @@ export class ComplaintsController {
     @GetAccount() account: Account,
     @Param('id') id: string,
   ): Promise<void> {
-    return;
+    return this.complaintsService.withdrawComplaint(account, id);
   }
 }
