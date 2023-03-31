@@ -15,6 +15,7 @@ import { DSN } from './constants';
 import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
 import { JWTGuard } from './auth/jwt.guard';
 import { PrivilegesGuard } from './auth/privileges.guard';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { PrivilegesGuard } from './auth/privileges.guard';
       inject: [ConfigService],
       useFactory: DSN.PGFactory,
     }),
+    EventEmitterModule.forRoot(),
   ],
   providers: [
     {

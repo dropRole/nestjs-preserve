@@ -26,7 +26,7 @@ export class ReservationsController {
     @GetAccount() account: Account,
     @Body() reservationMakeDTO: ReservationMakeDTO,
   ): Promise<void> {
-    return;
+    return this.reservationsService.reserve(account, reservationMakeDTO);
   }
 
   @Get()
@@ -35,7 +35,10 @@ export class ReservationsController {
     @GetAccount() account: Account,
     @Query() reservationFilterDTO: ReservationFilterDTO,
   ): Promise<Reservation[]> {
-    return;
+    return this.reservationsService.getReservations(
+      account,
+      reservationFilterDTO,
+    );
   }
 
   @Delete('/:id')
@@ -44,6 +47,6 @@ export class ReservationsController {
     @GetAccount() account: Account,
     @Param('id') id: string,
   ): Promise<void> {
-    return;
+    return this.reservationsService.deleteReservation(account, id);
   }
 }

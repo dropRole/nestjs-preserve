@@ -11,12 +11,18 @@ export class SseController {
   @Sse('/stream')
   @Privileges(Privilege.OFFEREE, Privilege.OFFEROR)
   sse(): Observable<{ data: any }> {
-    return;
+    return new Observable((subscriber) => {
+      setInterval(
+        () =>
+          subscriber.next({ data: { updates: this.sseService.getMessages() } }),
+        1000,
+      );
+    });
   }
 
   @Delete('/filter')
   @Privileges(Privilege.OFFEREE, Privilege.OFFEROR)
   filterStream(@Body('message') message: string): void {
-    return;
+    return this.sseService.deleteMessage(message);
   }
 }

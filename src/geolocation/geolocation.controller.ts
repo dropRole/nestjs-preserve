@@ -14,12 +14,12 @@ export class GeolocationController {
     @Query('lat') lat: string,
     @Query('lon') lon: string,
   ): Observable<{}> {
-    return;
+    return this.geolocationService.reverseGeocode(lat, lon);
   }
 
   @Get('/geocoding/search')
   @Privileges(Privilege.OFFEROR)
   search(@Query('q') q: string): Observable<{}> {
-    return;
+    return this.geolocationService.search(q);
   }
 }

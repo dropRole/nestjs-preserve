@@ -25,7 +25,7 @@ export class ProhibitionsController {
   prohibitOfferee(
     @Body() offereeProhibitDTO: OffereeProhibitDTO,
   ): Promise<void> {
-    return;
+    return this.prohibitionsService.prohibitOfferee(offereeProhibitDTO);
   }
 
   @Get('/offeree')
@@ -34,7 +34,7 @@ export class ProhibitionsController {
     @GetAccount() account: Account,
     @Body('username') username?: string,
   ): Promise<Prohibition[]> {
-    return;
+    return this.prohibitionsService.getProhibitionsOfOfferee(account, username);
   }
 
   @Get('/offeror')
@@ -43,7 +43,7 @@ export class ProhibitionsController {
     @GetAccount() account: Account,
     @Body('name') name?: string,
   ): Promise<Prohibition[]> {
-    return;
+    return this.prohibitionsService.getProhibitionsForOfferor(account, name);
   }
 
   @Patch('/:id/timeframe')
@@ -52,12 +52,12 @@ export class ProhibitionsController {
     @Param('id') id: string,
     @Body() timeframeUpdateDTO: TimeframeUpdateDTO,
   ): Promise<void> {
-    return;
+    return this.prohibitionsService.updateTimeframe(id, timeframeUpdateDTO);
   }
 
   @Delete('/:id')
   @Privileges(Privilege.SUPERUSER)
   revokeProhibition(@Param('id') id: string): Promise<void> {
-    return;
+    return this.prohibitionsService.revokeProhibition(id);
   }
 }
