@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, ClassSerializerInterceptor } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { OffereesModule } from './offerees/offerees.module';
 import { OfferorsModule } from './offerors/offerors.module';
@@ -12,6 +12,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EnvConfigValidationSchema } from './env-config.schema';
 import { TypeOrmModule } from '@nestjs/typeorm/dist';
 import { DSN } from './constants';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -33,6 +34,12 @@ import { DSN } from './constants';
       inject: [ConfigService],
       useFactory: DSN.PGFactory,
     }),
+  ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor,
+    },
   ],
 })
 export class AppModule {}
